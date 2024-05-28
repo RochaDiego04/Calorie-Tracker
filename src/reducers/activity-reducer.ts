@@ -1,6 +1,9 @@
 import { Activity } from "../types";
 
-export type ActivityActions = {};
+export type ActivityActions =
+  // payload son los datos que se agregarán al state
+  // podemos agregar mas actions con |
+  { type: "save-activity"; payload: { newActivity: Activity } };
 
 type ActivityState = {
   activities: Activity[];
@@ -15,4 +18,11 @@ export const initialState: ActivityState = {
 export const activityReducer = (
   state: ActivityState = initialState,
   action: ActivityActions
-) => {};
+) => {
+  if (action.type === "save-activity") {
+    // Aqui se maneja la logica para actualizar el state
+    console.log("desde save activity");
+  }
+
+  return state;
+};
