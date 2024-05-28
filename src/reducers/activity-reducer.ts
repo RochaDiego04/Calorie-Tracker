@@ -21,7 +21,11 @@ export const activityReducer = (
 ) => {
   if (action.type === "save-activity") {
     // Aqui se maneja la logica para actualizar el state
-    console.log("desde save activity");
+    // usamos spread ... por si tuvieramos mas cosas en initialState ademas del arreglo []
+    return {
+      ...state,
+      activities: [...state.activities, action.payload.newActivity],
+    };
   }
 
   return state;
