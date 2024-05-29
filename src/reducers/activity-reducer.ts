@@ -4,16 +4,22 @@ export type ActivityActions =
   // payload son los datos que se agregarán al state
   // podemos agregar mas actions con |
   | { type: "save-activity"; payload: { newActivity: Activity } }
-  | { type: "set-active-id"; payload: { id: Activity["id"] } };
+  | { type: "set-active-id"; payload: { id: Activity["id"] } }
+  | { type: "remove-activity"; payload: { id: Activity["id"] } };
 
 export type ActivityState = {
   activities: Activity[];
   activeId: Activity["id"]; // en lugar de poner tipo de dato string, lo ponemos así por si luego cambiamos el id a int, etc. se actualice solo
 };
 
+const localStorageActivities = (): Activity[] => {
+  const activities = localStorage.getItem("activities");
+  return activities ? JSON.parse(activities) : [];
+};
+
 export const initialState: ActivityState = {
   // El hook inicia como arreglo vacío
-  activities: [],
+  activities: localStorageActivities(),
   activeId: "",
 };
 
@@ -46,6 +52,15 @@ export const activityReducer = (
     return {
       ...state,
       activeId: action.payload.id,
+    };
+  }
+
+  if (action.type === "remove-activity") {
+    return {
+      ...state,
+      activities: state.activities.filter(
+        (activity) => activity.id !== action.payload.id
+      ),
     };
   }
 
